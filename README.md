@@ -83,7 +83,11 @@ Generates a Disqus SSO authentication script.
 **Response:**
 ```json
 {
-  "sso": "<script type=\"text/javascript\">...</script>"
+  "sso": {
+    "pubKey": "your_disqus_public_key",
+    "auth": "base64_message signature timestamp",
+    "test": "this is a test field"
+  }
 }
 ```
 
@@ -139,40 +143,15 @@ wrangler deploy
 1. **User Data**: Your application sends user data to the `/sso` endpoint
 2. **JSON Encoding**: User data is encoded as JSON and base64 encoded
 3. **Signature**: An HMAC-SHA1 signature is generated using your Disqus secret key
-4. **Script Generation**: A JavaScript snippet is returned that configures Disqus SSO
-5. **Integration**: Include the returned script in your web page before loading Disqus
+4. **Integration**: The SSO payload gets returned to your frontend, which you can use to refresh the Disqus embed with a new user.
 
-## Integration Example
-
-```javascript
-// In your frontend application
-const response = await fetch('/sso', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    user: {
-      username: currentUser.username,
-      id: currentUser.id,
-      email: currentUser.email,
-      avatar: currentUser.avatar
-    }
-  })
-});
-
-const { sso } = await response.json();
-
-// Insert the SSO script into your page
-document.head.insertAdjacentHTML('beforeend', sso);
-
-// Then load Disqus normally
-(function() {
-  var d = document, s = d.createElement('script');
-  s.src = 'https://YOUR_DISQUS_SHORTNAME.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', +new Date());
-  (d.head || d.body).appendChild(s);
-})();
+```
+DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.remote_auth_s3 = newAuth;
+          },
+        });
 ```
 
 ## Environment Variables

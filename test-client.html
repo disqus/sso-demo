@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disqus SSO Test Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px 10px 0;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        .result {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            background: #ffe6e6;
+            border-color: #ff9999;
+            color: #cc0000;
+        }
+        .success {
+            background: #e6ffe6;
+            border-color: #99ff99;
+            color: #006600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Disqus SSO Test Client</h1>
+    <p>This is a simple test client for your Disqus SSO serverless function.</p>
+    
+    <div class="container">
+        <h2>Test SSO Generation</h2>
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" value="http://localhost:8787" placeholder="http://localhost:8787">
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" value="john_doe" placeholder="Enter username">
+        
+        <label for="userId">User ID:</label>
+        <input type="text" id="userId" value="12345" placeholder="Enter user ID">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" value="john@example.com" placeholder="Enter email">
+        
+        <label for="avatar">Avatar URL (optional):</label>
+        <input type="url" id="avatar" value="" placeholder="https://example.com/avatar.jpg">
+        
+        <label for="profileUrl">Profile URL (optional):</label>
+        <input type="url" id="profileUrl" value="" placeholder="https://example.com/profile">
+        
+        <button onclick="testSSO()">Generate SSO</button>
+        <button onclick="testHealth()">Test Health Check</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div class="container">
+        <h2>Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function testSSO() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const username = document.getElementById('username').value;
+            const userId = document.getElementById('userId').value;
+            const email = document.getElementById('email').value;
+            const avatar = document.getElementById('avatar').value;
+            const profileUrl = document.getElementById('profileUrl').value;
+
+            if (!username || !userId || !email) {
+                showResult('Error: Username, User ID, and Email are required', 'error');
+                return;
+            }
+
+            const user = {
+                username,
+                id: userId,
+                email
+            };
+
+            if (avatar) user.avatar = avatar;
+            if (profileUrl) user.url = profileUrl;
+
+            try {
+                showResult('Sending request...', 'info');
+                
+                const response = await fetch(`${apiUrl}/sso`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`Success! Pubkey: ${data.sso.pubKey}
+                    Auth: ${data.sso.auth}
+                    Test: ${data.sso.test}`,
+                    'success');
+                } else {
+                    showResult(`Error: ${data.error || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Network Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testHealth() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            try {
+                showResult('Checking health...', 'info');
+                
+                const response = await fetch(`${apiUrl}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`Health Check Success! ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    showResult(`Health Check Failed: ${data.error || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Network Error: ${error.message}`, 'error');
+            }
+        }
+
+        function showResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const result = document.createElement('div');
+            result.className = `result ${type}`;
+            result.textContent = message;
+            results.appendChild(result);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Show initial message
+        showResult('Ready to test your Disqus SSO API. Make sure your development server is running!', 'info');
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "sso-serverless",
+  "version": "1.0.0",
+  "description": "Disqus SSO serverless function for Cloudflare Workers",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "serverless",
+    "disqus",
+    "sso"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "vitest": "^1.6.0",
+    "wrangler": "^4.24.3"
+  }
+}

@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars and add your actual keys
+# This file is used for local development with `wrangler dev`
+
+DISQUS_SECRET_KEY=your_disqus_secret_key_here
+DISQUS_PUBLIC_KEY=your_disqus_public_key_here

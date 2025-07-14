@@ -15,7 +15,7 @@ A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SS
 ### 1. Install Dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 ### 2. Set Up Environment Variables
@@ -36,7 +36,7 @@ DISQUS_PUBLIC_KEY=your_actual_public_key
 ### 3. Run Locally
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 Your serverless function will be available at `http://localhost:8787`
@@ -104,7 +104,7 @@ Health check endpoint.
 Run the test suite:
 
 ```bash
-npm test
+yarn test
 ```
 
 ## Deployment
@@ -131,7 +131,7 @@ wrangler secret put DISQUS_PUBLIC_KEY
 ### 4. Deploy
 
 ```bash
-npm run deploy
+yarn deploy
 ```
 
 ## How It Works
@@ -202,7 +202,7 @@ document.head.insertAdjacentHTML('beforeend', sso);
 1. Create new modules in `src/`
 2. Add corresponding tests in `test/`
 3. Update the main handler in `src/index.js`
-4. Run tests with `npm test`
+4. Run tests with `yarn test`
 
 ## Security Considerations
 

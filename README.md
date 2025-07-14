@@ -112,7 +112,7 @@ yarn test
 ### 1. Install Wrangler CLI
 
 ```bash
-npm install -g wrangler
+yarn global add wrangler
 ```
 
 ### 2. Authenticate with Cloudflare
@@ -131,7 +131,7 @@ wrangler secret put DISQUS_PUBLIC_KEY
 ### 4. Deploy
 
 ```bash
-yarn deploy
+wrangler deploy
 ```
 
 ## How It Works

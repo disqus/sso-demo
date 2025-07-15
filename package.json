@@ -1,25 +1,24 @@
 {
-  "name": "sso-serverless",
+  "name": "disqus-sso-monorepo",
   "version": "1.0.0",
-  "description": "Disqus SSO serverless function for Cloudflare Workers",
-  "main": "src/index.js",
-  "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "test": "vitest"
-  },
-  "keywords": [
-    "cloudflare",
-    "workers",
-    "serverless",
-    "disqus",
-    "sso"
+  "description": "Disqus SSO monorepo with Cloudflare Workers backend and multiple frontend implementations",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "author": "",
-  "license": "MIT",
+  "scripts": {
+    "dev": "yarn workspace @disqus-sso/backend dev",
+    "dev:vanilla": "yarn workspace @disqus-sso/frontend-vanilla dev",
+    "test": "yarn workspace @disqus-sso/backend test",
+    "build": "yarn workspaces run build",
+    "deploy:backend": "yarn workspace @disqus-sso/backend deploy",
+    "deploy:vanilla": "yarn workspace @disqus-sso/frontend-vanilla deploy"
+  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241205.0",
-    "vitest": "^1.6.0",
-    "wrangler": "^4.24.3"
+    "lerna": "^8.0.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
   }
 }

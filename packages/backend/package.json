@@ -1,0 +1,24 @@
+{
+  "name": "@disqus-sso/backend",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers backend for Disqus SSO",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "serverless",
+    "disqus",
+    "sso"
+  ],
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "vitest": "^1.6.0",
+    "wrangler": "^3.93.0"
+  },
+  "dependencies": {}
+}

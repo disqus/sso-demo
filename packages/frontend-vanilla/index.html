@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disqus SSO Test Client</title>
+    <title>Disqus SSO Demo</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,126 +62,100 @@
     </style>
 </head>
 <body>
-    <h1>Disqus SSO Test Client</h1>
-    <p>This is a simple test client for your Disqus SSO serverless function.</p>
-    
-    <div class="container">
-        <h2>Test SSO Generation</h2>
-        <label for="apiUrl">API URL:</label>
-        <!-- local development -->
-        <input type="text" id="apiUrl" value="http://localhost:8787" placeholder="http://localhost:8787">
+    <h1>Disqus SSO Demo</h1>
+    <p>This is a simple demo client for your Disqus SSO serverless function.</p>
+    <button
+      onclick="reset('e30= c1ad77866d19a308f133d18bb12a3e1f5d536a3b 1495142696'); $('#disqus_thread p').remove();"
+    >
+      Log out user with empty SSO auth
+    </button>
 
-        <!-- production -->
-        <!-- <input type="text" id="apiUrl" value="https://sso-serverless.ctang-402.workers.dev" placeholder="https://sso-serverless.ctang-402.workers.dev"> -->
-        
-        <label for="username">Username:</label>
-        <input type="text" id="username" value="john_doe" placeholder="Enter username">
-        
-        <label for="userId">User ID:</label>
-        <input type="text" id="userId" value="12345" placeholder="Enter user ID">
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" value="john@example.com" placeholder="Enter email">
-        
-        <label for="avatar">Avatar URL (optional):</label>
-        <input type="url" id="avatar" value="" placeholder="https://example.com/avatar.jpg">
-        
-        <label for="profileUrl">Profile URL (optional):</label>
-        <input type="url" id="profileUrl" value="" placeholder="https://example.com/profile">
-        
-        <button onclick="testSSO()">Generate SSO</button>
-        <button onclick="testHealth()">Test Health Check</button>
-        <button onclick="clearResults()">Clear Results</button>
-    </div>
-    
-    <div class="container">
-        <h2>Results</h2>
-        <div id="results"></div>
-    </div>
+    <button onclick="login();">Login</button>
+
+    <div id="disqus_thread"></div>
 
     <script>
-        async function testSSO() {
-            const apiUrl = document.getElementById('apiUrl').value;
-            const username = document.getElementById('username').value;
-            const userId = document.getElementById('userId').value;
-            const email = document.getElementById('email').value;
-            const avatar = document.getElementById('avatar').value;
-            const profileUrl = document.getElementById('profileUrl').value;
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
 
-            if (!username || !userId || !email) {
-                showResult('Error: Username, User ID, and Email are required', 'error');
-                return;
-            }
+      var disqus_config = function () {
+        this.page.url = "https://disqus-sso-demo.glitch.me/"; // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "1 https://disqus-sso-demo.glitch.me/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = "Disqus SSO quick start";
+        this.page.api_key =
+          "IrsWOMVmYfDfTq7IJ5fXMA2Ix99nB30EF7cP77SDgIrGyoQna1wXwU42wx17xRjN";
+        this.sso = { // this `sso` object is optional.  It is only needed if you want the SSO login button to appear next to the Disqus login options
+          name: "SampleNews",
+          button: "http://example.com/images/samplenews.gif",
+          icon: "http://example.com/favicon.png",
+          url: "http://example.com/login/",
+          logout: "http://example.com/logout/",
+          profile_url: "http://example.com/profileUrlTemplate/{username}",
+          width: "800",
+          height: "400",
+        };
+      };
 
-            const user = {
-                username,
-                id: userId,
-                email
-            };
+      (function () {
+        var d = document,
+          s = d.createElement("script");
 
-            if (avatar) user.avatar = avatar;
-            if (profileUrl) user.url = profileUrl;
+        s.src = "//ssoglitch.disqus.com/embed.js";
 
-            try {
-                showResult('Sending request...', 'info');
-                
-                const response = await fetch(`${apiUrl}/sso`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ user })
-                });
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
 
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResult(`Success! Pubkey: ${data.sso.pubKey}
-                    Auth: ${data.sso.auth}
-                    Test: ${data.sso.test}`,
-                    'success');
-                } else {
-                    showResult(`Error: ${data.error || 'Unknown error'}`, 'error');
-                }
-            } catch (error) {
-                showResult(`Network Error: ${error.message}`, 'error');
-            }
-        }
+      /* * * Disqus Reset Function * * */
+      var reset = function (newAuth) {        
+        DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.remote_auth_s3 = newAuth;
+          },
+        });
+      };
 
-        async function testHealth() {
-            const apiUrl = document.getElementById('apiUrl').value;
-            
-            try {
-                showResult('Checking health...', 'info');
-                
-                const response = await fetch(`${apiUrl}/health`);
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResult(`Health Check Success! ${JSON.stringify(data, null, 2)}`, 'success');
-                } else {
-                    showResult(`Health Check Failed: ${data.error || 'Unknown error'}`, 'error');
-                }
-            } catch (error) {
-                showResult(`Network Error: ${error.message}`, 'error');
-            }
-        }
+      /**
+       * Makes call to server to get payload and reset Disqus
+       * DISQUS.reset() is not required for SSO but can used to refresh Disqus with a new user
+       */
+      function login() {
+        const userData = {
+          username: 'email subscriber',
+          id: '12345',
+          email: 'emailsubscriber@example.com',
+          avatar: 'https://example.com/avatar.jpg'
+        };
 
-        function showResult(message, type = 'info') {
-            const results = document.getElementById('results');
-            const result = document.createElement('div');
-            result.className = `result ${type}`;
-            result.textContent = message;
-            results.appendChild(result);
-            results.scrollTop = results.scrollHeight;
-        }
-
-        function clearResults() {
-            document.getElementById('results').innerHTML = '';
-        }
-
-        // Show initial message
-        showResult('Ready to test your Disqus SSO API. Make sure your development server is running!', 'info');
+        $.ajax({
+          url: 'http://localhost:8787/sso',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ user: userData }),
+          success: function(response) {
+            $('#disqus_thread p').remove();
+            $("<p></p>").text("payload: ").appendTo("#disqus_thread");
+            $("<p></p>").text(response.sso.auth).appendTo("#disqus_thread");
+            $("<p></p>").text("public key: ").appendTo("#disqus_thread");
+            $("<p></p>").text(response.sso.pubKey).appendTo("#disqus_thread");
+            $("<p></p>").text("test field: ").appendTo("#disqus_thread");
+            $("<p></p>").text(response.sso.test).appendTo("#disqus_thread");
+            reset(response.sso.auth);
+          },
+          error: function(xhr, status, error) {
+            $("<p></p>").text("Error: " + error).appendTo("#disqus_thread");
+          }
+        });
+      }
     </script>
+    <noscript
+      >Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript" rel="nofollow"
+        >comments powered by Disqus.</a
+      ></noscript
+    >
 </body>
 </html>

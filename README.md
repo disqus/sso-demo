@@ -4,7 +4,7 @@ A complete Disqus Single Sign-On (SSO) implementation using Cloudflare Workers a
 
 ## 🚀 Live Demo
 
-- **Frontend Demo**: [GitHub Pages URL - will be available after deployment]
+- **Frontend Demo**: `https://disqus.github.io/sso-demo/`
 - **Backend API**: `https://sso-serverless.ctang-402.workers.dev`
 
 ## 📋 What's Included

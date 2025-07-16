@@ -27,7 +27,7 @@ A simple vanilla JavaScript implementation demo for Disqus SSO integrated with a
 
 The frontend is automatically deployed to GitHub Pages when changes are pushed to the main branch.
 
-**Live Demo**: [Your GitHub Pages URL will be here]
+**Live Demo**: `https://disqus.github.io/sso-demo/`
 
 ## How It Works
 

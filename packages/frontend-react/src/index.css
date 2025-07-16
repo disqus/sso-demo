@@ -1,0 +1,30 @@
+body {
+    font-family: monospace;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+button {
+    background: #007cba;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 10px 0;
+}
+button:hover {
+    background: #005a87;
+}
+p {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    background: #f8f9fa;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 5px 0;
+}

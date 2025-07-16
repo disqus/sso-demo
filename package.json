@@ -9,8 +9,10 @@
   "scripts": {
     "dev": "yarn workspace @disqus-sso/backend dev",
     "dev:vanilla": "yarn workspace @disqus-sso/frontend-vanilla dev",
+    "dev:react": "yarn workspace @disqus-sso/frontend-react dev",
     "test": "yarn workspace @disqus-sso/backend test",
     "build": "yarn workspaces run build",
+    "build:react": "yarn workspace @disqus-sso/frontend-react build",
     "deploy:backend": "yarn workspace @disqus-sso/backend deploy",
     "deploy:vanilla": "yarn workspace @disqus-sso/frontend-vanilla deploy"
   },

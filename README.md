@@ -1,81 +1,115 @@
-# Disqus SSO Serverless
+# Disqus SSO Demo
 
-A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SSO) functionality. This project is based on the [official Disqus SSO implementation](https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/) and adapted for serverless deployment.
+A complete Disqus Single Sign-On (SSO) implementation using Cloudflare Workers and vanilla JavaScript, demonstrating how to integrate Disqus authentication with your own user system.
 
-## Features
+## 🚀 Live Demo
 
-- 🚀 **Serverless**: Deployed on Cloudflare Workers
-- 🔐 **Secure**: HMAC-SHA1 signature generation for authentication
-- 🧪 **Tested**: Comprehensive test suite with Vitest
-- 🌐 **CORS Ready**: Proper CORS handling for cross-origin requests
-- 📦 **Easy Deploy**: Simple deployment with Wrangler CLI
+- **Frontend Demo**: [GitHub Pages URL - will be available after deployment]
+- **Backend API**: `https://sso-serverless.ctang-402.workers.dev`
 
-## Quick Start
+## 📋 What's Included
 
-### 1. Install Dependencies
+This monorepo contains:
 
+### Backend (`packages/backend/`)
+- **Cloudflare Workers** serverless function
+- **Disqus SSO API** with HMAC-SHA1 authentication
+- **CORS-enabled** endpoints for frontend integration
+- **Environment variables** for secure key management
+- **Comprehensive tests** using Vitest
+
+### Frontend (`packages/frontend-vanilla/`)
+- **Vanilla JavaScript** demo application
+- **jQuery integration** for AJAX calls
+- **Environment detection** (localhost vs production)
+- **Live Disqus integration** with login/logout functionality
+- **Responsive design** that works on mobile and desktop
+
+## 🛠️ Key Features
+
+- **🔐 Secure Authentication**: HMAC-SHA1 signed payloads for Disqus SSO
+- **☁️ Serverless**: Runs on Cloudflare Workers edge network
+- **🌐 CORS Ready**: Configured for cross-origin requests
+- **📱 Responsive**: Works on all devices
+- **🔧 Environment Aware**: Automatically detects local vs production
+- **⚡ Fast**: Edge-deployed with minimal latency
+- **🧪 Well Tested**: Comprehensive test suite
+
+## 🏗️ Project Structure
+
+```
+sso-demo/
+├── packages/
+│   ├── backend/                 # Cloudflare Workers backend
+│   │   ├── src/
+│   │   │   ├── index.js        # Main worker entry point
+│   │   │   └── sso.js          # Disqus SSO logic
+│   │   ├── test/
+│   │   │   └── sso.test.js     # Test suite
+│   │   ├── wrangler.toml       # Cloudflare Workers config
+│   │   └── package.json
+│   └── frontend-vanilla/        # Vanilla JS frontend
+│       ├── index.html          # Main demo page
+│       ├── src/
+│       │   └── disqus-sso.js   # SSO client library
+│       └── package.json
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml          # Backend deployment
+│       └── deploy-pages.yml    # Frontend deployment
+└── package.json                # Monorepo configuration
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 22+ 
+- Yarn package manager
+- Cloudflare account (for backend deployment)
+- Disqus account with SSO enabled
+
+### 1. Clone and Install
 ```bash
+git clone https://github.com/disqus/sso-demo.git
+cd sso-demo
 yarn install
 ```
 
-### 2. Set Up Environment Variables
-
-Copy the environment variables template:
-
+### 2. Configure Environment
 ```bash
-cp .dev.vars.example .dev.vars
+# Copy example environment file
+cp packages/backend/.dev.vars.example packages/backend/.dev.vars
+
+# Edit with your Disqus keys
+nano packages/backend/.dev.vars
 ```
 
-Edit `.dev.vars` and add your actual Disqus keys:
-
+### 3. Start Development
 ```bash
-DISQUS_SECRET_KEY=your_actual_secret_key
-DISQUS_PUBLIC_KEY=your_actual_public_key
-```
-
-### 3. Run Locally
-
-```bash
+# Start backend (Cloudflare Workers)
 yarn dev
+
+# In another terminal, serve frontend
+yarn dev:vanilla
 ```
 
-Your serverless function will be available at `http://localhost:8787`
+### 4. Test Locally
+- Backend API: `http://localhost:8787`
+- Frontend Demo: `http://localhost:3000` (or open `packages/frontend-vanilla/index.html`)
 
-### 4. Test the API
-
-**Health Check:**
-```bash
-curl http://localhost:8787/health
-```
-
-**Generate SSO Token:**
-```bash
-curl -X POST http://localhost:8787/sso \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "user": {
-      "username": "john_doe",
-      "id": "12345",
-      "email": "john@example.com"
-    }
-  }'
-```
-
-## API Endpoints
+## 📡 API Endpoints
 
 ### `POST /sso`
+Generate Disqus SSO payload for user authentication.
 
-Generates a Disqus SSO authentication script.
-
-**Request Body:**
+**Request:**
 ```json
 {
   "user": {
-    "username": "string",
-    "id": "string", 
-    "email": "string",
-    "avatar": "string (optional)",
-    "url": "string (optional)"
+    "id": "123",
+    "username": "john_doe",
+    "email": "john@example.com",
+    "avatar": "https://example.com/avatar.jpg"
   }
 }
 ```
@@ -83,140 +117,108 @@ Generates a Disqus SSO authentication script.
 **Response:**
 ```json
 {
-  "sso": {
-    "pubKey": "your_disqus_public_key",
-    "auth": "base64_message signature timestamp",
-    "test": "this is a test field"
-  }
+  "success": true,
+  "sso": "eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoi...",
+  "timestamp": 1642694400
 }
 ```
 
 ### `GET /health`
-
 Health check endpoint.
 
 **Response:**
 ```json
 {
-  "status": "ok",
-  "timestamp": "2024-01-01T00:00:00.000Z"
+  "status": "healthy",
+  "timestamp": 1642694400
 }
 ```
 
-## Testing
+## 🔧 Configuration
 
-Run the test suite:
+### Backend Environment Variables
+```bash
+# Required
+DISQUS_SECRET_KEY=your_disqus_secret_key
+DISQUS_PUBLIC_KEY=your_disqus_public_key
+
+# Optional
+ALLOWED_ORIGINS=https://yourdomain.com,http://localhost:3000
+```
+
+### Frontend Configuration
+The frontend automatically detects the environment:
+- **Development**: Uses `http://localhost:8787`
+- **Production**: Uses `https://sso-serverless.ctang-402.workers.dev`
+
+## 🚢 Deployment
+
+### Backend (Cloudflare Workers)
+Automatically deployed via GitHub Actions when you push to `main`:
+
+1. Configure secrets in GitHub repository settings:
+   - `CLOUDFLARE_API_TOKEN`
+   - `DISQUS_SECRET_KEY`
+   - `DISQUS_PUBLIC_KEY`
+
+2. Push to main branch:
+   ```bash
+   git push origin main
+   ```
+
+### Frontend (GitHub Pages)
+Automatically deployed when frontend files change:
+
+1. Enable GitHub Pages in repository settings:
+   - Go to Settings → Pages
+   - Select "GitHub Actions" as source
+
+2. Push changes:
+   ```bash
+   git push origin main
+   ```
+
+## 🧪 Testing
 
 ```bash
+# Run all tests
 yarn test
+
+# Run backend tests only
+yarn workspace @disqus-sso/backend test
+
+# Run tests in watch mode
+yarn workspace @disqus-sso/backend test --watch
 ```
 
-## Deployment
+## 🔒 Security
 
-### 1. Install Wrangler CLI
+- **HMAC-SHA1 Signatures**: All SSO payloads are cryptographically signed
+- **Environment Variables**: Sensitive keys stored securely
+- **CORS Configuration**: Controlled cross-origin access
+- **Input Validation**: All user inputs are validated
+- **No Secrets in Code**: All sensitive data uses environment variables
 
-```bash
-yarn global add wrangler
-```
-
-### 2. Authenticate with Cloudflare
-
-```bash
-wrangler auth login
-```
-
-### 3. Set Production Secrets
-
-```bash
-wrangler secret put DISQUS_SECRET_KEY
-wrangler secret put DISQUS_PUBLIC_KEY
-```
-
-### 4. Deploy
-
-```bash
-wrangler deploy
-```
-
-## How It Works
-
-1. **User Data**: Your application sends user data to the `/sso` endpoint
-2. **JSON Encoding**: User data is encoded as JSON and base64 encoded
-3. **Signature**: An HMAC-SHA1 signature is generated using your Disqus secret key
-4. **Integration**: The SSO payload gets returned to your frontend, which you can use to refresh the Disqus embed with a new user.
-
-```
-DISQUS.reset({
-          reload: true,
-          config: function () {
-            this.page.remote_auth_s3 = newAuth;
-          },
-        });
-```
-
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DISQUS_SECRET_KEY` | Your Disqus secret key | Yes |
-| `DISQUS_PUBLIC_KEY` | Your Disqus public key | Yes |
-
-## Development
-
-### Project Structure
-
-```
-├── src/
-│   ├── index.js        # Main worker entry point
-│   └── sso.js          # SSO logic
-├── test/
-│   └── sso.test.js     # Test suite
-├── .dev.vars.example   # Environment variables template
-├── wrangler.toml       # Cloudflare Workers configuration
-└── package.json
-```
-
-### Adding Features
-
-1. Create new modules in `src/`
-2. Add corresponding tests in `test/`
-3. Update the main handler in `src/index.js`
-4. Run tests with `yarn test`
-
-## Security Considerations
-
-- Never commit actual API keys to version control
-- Use Wrangler secrets for production deployment
-- Validate all incoming request data
-- Implement rate limiting if needed
-- Monitor for unusual traffic patterns
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Invalid signature**: Check that your secret key is correct
-2. **CORS errors**: Ensure your frontend domain is properly configured
-3. **Missing environment variables**: Verify `.dev.vars` file exists and has correct keys
-
-### Debug Mode
-
-Enable debug logging by setting `DEBUG=true` in your environment variables.
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Related Links
+## 🆘 Support
 
-- [Disqus SSO Documentation](https://help.disqus.com/en/articles/1717203-single-sign-on)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Original Python Implementation](https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/python3/sso.py)
+- **Issues**: [GitHub Issues](https://github.com/disqus/sso-demo/issues)
+- **Disqus SSO Docs**: [Disqus SSO Documentation](https://help.disqus.com/en/articles/1717214-single-sign-on)
+- **Cloudflare Workers**: [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+
+## 🔗 Related
+
+- [Disqus SSO Documentation](https://help.disqus.com/en/articles/1717214-single-sign-on)
+- [Cloudflare Workers](https://workers.cloudflare.com/)
+- [GitHub Pages](https://pages.github.com/)

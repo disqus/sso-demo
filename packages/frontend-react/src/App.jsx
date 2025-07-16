@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
 import DisqusSSO from './components/DisqusSSO';
-import { DisussionEmbed } from 'disqus-react';
 
 function App() {
   return (

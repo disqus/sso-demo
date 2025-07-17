@@ -13,8 +13,10 @@
     "test": "yarn workspace @disqus-sso/backend test",
     "build": "yarn workspaces run build",
     "build:react": "yarn workspace @disqus-sso/frontend-react build",
+    "build:pages": "yarn build:react",
     "deploy:backend": "yarn workspace @disqus-sso/backend deploy",
-    "deploy:vanilla": "yarn workspace @disqus-sso/frontend-vanilla deploy"
+    "deploy:vanilla": "yarn workspace @disqus-sso/frontend-vanilla deploy",
+    "deploy:pages": "echo 'GitHub Pages deployment handled by GitHub Actions'"
   },
   "devDependencies": {
     "lerna": "^8.0.0"

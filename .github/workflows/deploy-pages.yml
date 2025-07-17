@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/frontend-vanilla/**'
       - 'packages/frontend-react/**'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:

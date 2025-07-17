@@ -40,18 +40,22 @@
 </head>
 <body>
     <h1>Disqus SSO Demo - Vanilla JavaScript</h1>
+    <div>
+        <a href="https://github.com/disqus/sso-demo/tree/main/packages/frontend-vanilla" target="_blank" rel="noopener noreferrer">View Frontend Source Code on GitHub</a>
+    </div>
 
-    <a href="https://github.com/disqus/sso-demo/tree/main/packages/frontend-vanilla" target="_blank" rel="noopener noreferrer">View Frontend Source Code on GitHub</a>
+    <div>
+        <a href="https://github.com/disqus/sso-demo/tree/main/packages/backend" target="_blank" rel="noopener noreferrer">View Backend Source Code on GitHub</a>
+    </div>
 
-    <a href="https://github.com/disqus/sso-demo/tree/main/packages/backend" target="_blank" rel="noopener noreferrer">View Backend Source Code on GitHub</a>
-
-    <button onclick="login();">Login</button>
-
-    <button
-      onclick="reset('e30= c1ad77866d19a308f133d18bb12a3e1f5d536a3b 1495142696'); $('#disqus_thread p').remove();"
-    >
-      Log out user with empty SSO auth
-    </button>
+    <div>
+         <button onclick="login();">Login</button>
+        <button
+        onclick="reset('e30= c1ad77866d19a308f133d18bb12a3e1f5d536a3b 1495142696'); $('#disqus_thread p').remove();"
+        >
+        Log out user with empty SSO auth
+        </button>
+    </div>
 
     <div id="disqus_thread"></div>
 

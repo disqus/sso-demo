@@ -41,17 +41,37 @@ yarn dev
 
 Your serverless function will be available at `http://localhost:8787`
 
+**Production URL:** `https://sso-serverless.ctang-402.workers.dev/`
+
 ### 4. Test the API
 
-**Health Check:**
+**Health Check (Local):**
 ```bash
 curl http://localhost:8787/health
 ```
 
-**Generate SSO Token:**
+**Health Check (Production):**
 ```bash
-curl -X POST http://localhost:8787/sso \\
-  -H "Content-Type: application/json" \\
+curl https://sso-serverless.ctang-402.workers.dev/health
+```
+
+**Generate SSO Token (Local):**
+```bash
+curl -X POST http://localhost:8787/sso \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user": {
+      "username": "john_doe",
+      "id": "12345",
+      "email": "john@example.com"
+    }
+  }'
+```
+
+**Generate SSO Token (Production):**
+```bash
+curl -X POST https://sso-serverless.ctang-402.workers.dev/sso \
+  -H "Content-Type: application/json" \
   -d '{
     "user": {
       "username": "john_doe",
@@ -112,6 +132,8 @@ yarn test
 ```
 
 ## Deployment
+
+The backend is deployed to: **`https://sso-serverless.ctang-402.workers.dev/`**
 
 ### 1. Install Wrangler CLI
 

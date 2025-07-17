@@ -5,8 +5,9 @@ A React implementation of the Disqus SSO demo using Vite as the build tool.
 ## Features
 
 - **React Components**: Modern React with hooks for state management
+- **Official Disqus Integration**: Uses the official `disqus-react` package for seamless Disqus embedding
 - **Environment Detection**: Automatically uses localhost for development and production URL for deployment
-- **Fetch API**: Uses modern fetch API instead of jQuery
+- **Axios HTTP Client**: Modern HTTP client for API requests instead of jQuery
 - **Responsive Design**: Works well on desktop and mobile devices
 - **Real-time SSO Testing**: Login/logout functionality with live Disqus integration
 - **Better Error Handling**: Comprehensive error states and loading indicators
@@ -39,11 +40,28 @@ The build output will be in the `dist/` directory.
 
 ## How It Works
 
-1. **Login Button**: Calls your backend API with test user data using fetch API
+1. **Login Button**: Calls your backend API with test user data using Axios
 2. **Environment Detection**: Uses localhost in development, production URL when deployed
-3. **SSO Integration**: Passes the SSO payload to Disqus for authentication
-4. **Logout Button**: Clears the current user and resets Disqus
+3. **SSO Integration**: Passes the SSO payload to Disqus for authentication via the `DiscussionEmbed` component
+4. **Logout Button**: Clears the current user and resets Disqus using the `window.DISQUS.reset()` API
 5. **State Management**: Uses React hooks for managing loading states and debug information
+
+## Disqus Integration
+
+This implementation uses the **official `disqus-react` package** which provides:
+
+- **`DiscussionEmbed` Component**: Renders the Disqus comment thread with proper React lifecycle management
+- **Automatic Script Loading**: Handles loading and cleanup of Disqus scripts
+- **SSO Configuration**: Supports Disqus SSO configuration through component props
+- **React-Friendly**: Properly integrates with React's virtual DOM and component lifecycle
+
+### Key Advantages of `disqus-react`:
+
+- ✅ **Official Support**: Maintained by Disqus team
+- ✅ **React Optimized**: Designed specifically for React applications
+- ✅ **Better Performance**: Handles script loading and cleanup automatically
+- ✅ **Type Safety**: Includes TypeScript definitions
+- ✅ **SSO Ready**: Built-in support for Single Sign-On configuration
 
 ## API Integration
 
@@ -55,9 +73,19 @@ The frontend communicates with your Cloudflare Workers backend:
 ## Component Structure
 
 - `App.jsx`: Main application component
-- `components/DisqusSSO.jsx`: Main SSO component with login/logout functionality
+- `components/DisqusSSO.jsx`: Main SSO component with login/logout functionality and `DiscussionEmbed` integration
 - `index.css`: Styling that matches the vanilla JS version
 - `main.jsx`: React application entry point
+
+### DisqusSSO Component Details
+
+The main component (`DisqusSSO.jsx`) demonstrates:
+
+- **State Management**: Uses `useState` for login status and debug information
+- **SSO Integration**: Configures the `DiscussionEmbed` component with SSO settings
+- **API Calls**: Makes POST requests to the backend using Axios
+- **Disqus Reset**: Uses `window.DISQUS.reset()` for logout functionality
+- **Error Handling**: Graceful error states and user feedback
 
 ## Deployment
 
@@ -72,7 +100,9 @@ The React version would be available at: `https://[username].github.io/sso-serve
 ## Development Notes
 
 - Uses modern React patterns with functional components and hooks
+- Leverages the **official `disqus-react` package** for better integration than manual script loading
 - Implements proper cleanup in useEffect to prevent memory leaks
 - Handles loading states and errors gracefully
 - Maintains the same visual styling as the vanilla JS version
 - Uses Vite for fast development and optimized production builds
+- Axios replaces jQuery for cleaner, Promise-based HTTP requests

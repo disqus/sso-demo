@@ -18,12 +18,20 @@ This monorepo contains:
 - **Environment variables** for secure key management
 - **Comprehensive tests** using Vitest
 
-### Frontend (`packages/frontend-vanilla/`)
+### Frontend - Vanilla JavaScript (`packages/frontend-vanilla/`)
 - **Vanilla JavaScript** demo application
 - **jQuery integration** for AJAX calls
 - **Environment detection** (localhost vs production)
 - **Live Disqus integration** with login/logout functionality
 - **Responsive design** that works on mobile and desktop
+
+### Frontend - React (`packages/frontend-react/`)
+- **React 18** with modern hooks and functional components
+- **Vite** for fast development and optimized builds
+- **Axios** for HTTP requests to the SSO backend
+- **disqus-react** package for seamless Disqus integration
+- **ESLint** configuration for code quality
+- **Modern ES6+** syntax and module system
 
 ## 🛠️ Key Features
 
@@ -48,11 +56,19 @@ sso-demo/
 │   │   │   └── sso.test.js     # Test suite
 │   │   ├── wrangler.toml       # Cloudflare Workers config
 │   │   └── package.json
-│   └── frontend-vanilla/        # Vanilla JS frontend
-│       ├── index.html          # Main demo page
+│   ├── frontend-vanilla/        # Vanilla JS frontend
+│   │   ├── index.html          # Vanilla JS demo page
+│   │   └── package.json
+│   └── frontend-react/          # React frontend
 │       ├── src/
-│       │   └── disqus-sso.js   # SSO client library
+│       │   ├── App.jsx         # Main React component
+│       │   ├── components/
+│       │   │   └── DisqusSSO.jsx # SSO integration component
+│       │   └── main.jsx        # React entry point
+│       ├── vite.config.js      # Vite configuration
+│       ├── eslint.config.js    # ESLint configuration
 │       └── package.json
+├── index.html                   # Landing page for demos
 ├── .github/
 │   └── workflows/
 │       ├── deploy.yml          # Backend deployment
@@ -89,13 +105,17 @@ nano packages/backend/.dev.vars
 # Start backend (Cloudflare Workers)
 yarn dev
 
-# In another terminal, serve frontend
+# In another terminal, serve vanilla frontend
 yarn dev:vanilla
+
+# Or serve React frontend
+yarn dev:react
 ```
 
 ### 4. Test Locally
 - Backend API: `http://localhost:8787`
-- Frontend Demo: `http://localhost:3000` (or open `packages/frontend-vanilla/index.html`)
+- Vanilla Frontend: `http://localhost:3000` (or open `packages/frontend-vanilla/index.html`)
+- React Frontend: `http://localhost:3001`
 
 ## 📡 API Endpoints
 
@@ -147,9 +167,14 @@ ALLOWED_ORIGINS=https://yourdomain.com,http://localhost:3000
 ```
 
 ### Frontend Configuration
-The frontend automatically detects the environment:
+Both frontends automatically detect the environment:
 - **Development**: Uses `http://localhost:8787`
 - **Production**: Uses `https://sso-serverless.ctang-402.workers.dev`
+
+**React-specific configuration:**
+- Vite build configuration in `vite.config.js`
+- Base path set to `/sso-demo/react/` for GitHub Pages deployment
+- ESLint rules for React development
 
 ## 🚢 Deployment
 
@@ -167,7 +192,10 @@ Automatically deployed via GitHub Actions when you push to `main`:
    ```
 
 ### Frontend (GitHub Pages)
-Automatically deployed when frontend files change:
+Automatically deployed when frontend files change. Both vanilla and React frontends are deployed to:
+- **Landing page**: `https://disqus.github.io/sso-demo/`
+- **Vanilla demo**: `https://disqus.github.io/sso-demo/vanilla/`
+- **React demo**: `https://disqus.github.io/sso-demo/react/`
 
 1. Enable GitHub Pages in repository settings:
    - Go to Settings → Pages
@@ -189,6 +217,19 @@ yarn workspace @disqus-sso/backend test
 
 # Run tests in watch mode
 yarn workspace @disqus-sso/backend test --watch
+```
+
+## 🏗️ Building
+
+```bash
+# Build React frontend for production
+yarn build:react
+
+# Build both frontends for GitHub Pages
+yarn build:pages
+
+# Build all workspaces
+yarn build
 ```
 
 ## 🔒 Security

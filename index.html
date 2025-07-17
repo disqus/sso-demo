@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disqus SSO Demo - Choose Frontend</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .frontend-option {
+            display: inline-block;
+            margin: 20px;
+            padding: 30px;
+            border: 2px solid #007cba;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #007cba;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .frontend-option:hover {
+            background: #007cba;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 124, 186, 0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        h2 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        
+        p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .description {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .tech-stack {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .github-link {
+            color: #007cba;
+            text-decoration: none;
+        }
+        
+        .github-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Disqus SSO Demo</h1>
+        
+        <div class="description">
+            This demo showcases Disqus Single Sign-On integration using a Cloudflare Workers backend 
+            with two different frontend implementations. Choose your preferred approach below.
+        </div>
+
+        <a href="https://github.com/disqus/sso-demo" target="_blank" rel="noopener noreferrer">View Source Code on GitHub</a>
+
+        <a href="./vanilla/" class="frontend-option">
+            <h2>Vanilla JavaScript</h2>
+            <p>Pure HTML, CSS & JavaScript</p>
+            <div class="tech-stack">HTML • CSS • Vanilla JS • jQuery</div>
+        </a>
+        
+        <a href="./react/" class="frontend-option">
+            <h2>React</h2>
+            <p>Modern React with Vite</p>
+            <div class="tech-stack">React 18 • Vite • ES6+ • Axios</div>
+        </a>
+        
+        <footer>
+            <p>
+                Powered by <strong>Cloudflare Workers</strong> • 
+                <a href="https://github.com/disqus/sso-serverless-worker" class="github-link" target="_blank">
+                    View on GitHub
+                </a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -57,58 +57,9 @@ jobs:
           mkdir -p deploy-site/react
           cp -r packages/frontend-react/dist/* deploy-site/react/
           
-      - name: Create index page
+      - name: Copy landing page
         run: |
-          cat > deploy-site/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Disqus SSO Demo - Choose Frontend</title>
-              <style>
-                  body {
-                      font-family: monospace;
-                      max-width: 600px;
-                      margin: 50px auto;
-                      padding: 20px;
-                      text-align: center;
-                  }
-                  .frontend-option {
-                      display: inline-block;
-                      margin: 20px;
-                      padding: 30px;
-                      border: 2px solid #007cba;
-                      border-radius: 8px;
-                      text-decoration: none;
-                      color: #007cba;
-                      transition: all 0.3s ease;
-                  }
-                  .frontend-option:hover {
-                      background: #007cba;
-                      color: white;
-                  }
-                  h1 { color: #333; }
-                  h2 { margin: 10px 0; }
-                  p { margin: 5px 0; color: #666; }
-              </style>
-          </head>
-          <body>
-              <h1>Disqus SSO Demo</h1>
-              <p>Choose your preferred frontend implementation:</p>
-              
-              <a href="./vanilla/" class="frontend-option">
-                  <h2>Vanilla JavaScript</h2>
-                  <p>Pure HTML, CSS & JavaScript</p>
-              </a>
-              
-              <a href="./react/" class="frontend-option">
-                  <h2>React</h2>
-                  <p>Modern React with Vite</p>
-              </a>
-          </body>
-          </html>
-          EOF
+          cp index.html deploy-site/
         
       - name: Setup Pages
         uses: actions/configure-pages@v4

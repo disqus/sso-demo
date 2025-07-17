@@ -94,7 +94,7 @@ Generates a Disqus SSO authentication script.
 
 ### `GET /health`
 
-Health check endpoint.
+Health check endpoint.  Not necesary for integrating Disqus SSO but can be useful to check the health of a worker.
 
 **Response:**
 ```json

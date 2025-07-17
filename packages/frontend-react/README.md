@@ -14,7 +14,6 @@ A React implementation of the Disqus SSO demo using Vite as the build tool.
 
 1. Make sure your backend is running:
    ```bash
-   cd /Users/ctang/Projects/sso-serverless
    yarn dev
    ```
 
@@ -38,8 +37,6 @@ The build output will be in the `dist/` directory.
 1. **Login Button**: Calls your backend API with test user data using Axios
 2. **Environment Detection**: Uses localhost in development, production URL when deployed
 3. **SSO Integration**: Passes the SSO payload to Disqus for authentication via the `DiscussionEmbed` component
-4. **Logout Button**: Clears the current user and resets Disqus using the `window.DISQUS.reset()` API
-5. **State Management**: Uses React hooks for managing loading states and debug information
 
 ## Disqus Integration
 
@@ -71,33 +68,3 @@ The frontend communicates with your Cloudflare Workers backend:
 - `components/DisqusSSO.jsx`: Main SSO component with login/logout functionality and `DiscussionEmbed` integration
 - `index.css`: Styling that matches the vanilla JS version
 - `main.jsx`: React application entry point
-
-### DisqusSSO Component Details
-
-The main component (`DisqusSSO.jsx`) demonstrates:
-
-- **State Management**: Uses `useState` for login status and debug information
-- **SSO Integration**: Configures the `DiscussionEmbed` component with SSO settings
-- **API Calls**: Makes POST requests to the backend using Axios
-- **Disqus Reset**: Uses `window.DISQUS.reset()` for logout functionality
-- **Error Handling**: Graceful error states and user feedback
-
-## Deployment
-
-This can be deployed to GitHub Pages alongside the vanilla JS version by:
-
-1. Building the React app
-2. Copying the build output to a `/react/` subdirectory
-3. Serving both versions from the same GitHub Pages site
-
-The React version would be available at: `https://[username].github.io/sso-serverless-worker/react/`
-
-## Development Notes
-
-- Uses modern React patterns with functional components and hooks
-- Leverages the **official `disqus-react` package** for better integration than manual script loading
-- Implements proper cleanup in useEffect to prevent memory leaks
-- Handles loading states and errors gracefully
-- Maintains the same visual styling as the vanilla JS version
-- Uses Vite for fast development and optimized production builds
-- Axios replaces jQuery for cleaner, Promise-based HTTP requests

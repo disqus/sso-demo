@@ -6,7 +6,6 @@ A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SS
 
 - 🚀 **Serverless**: Deployed on Cloudflare Workers
 - 🔐 **Secure**: HMAC-SHA1 signature generation for authentication
-- 🧪 **Tested**: Comprehensive test suite with Vitest
 - 🌐 **CORS Ready**: Proper CORS handling for cross-origin requests
 - 📦 **Easy Deploy**: Simple deployment with Wrangler CLI
 
@@ -50,27 +49,9 @@ Your serverless function will be available at `http://localhost:8787`
 curl http://localhost:8787/health
 ```
 
-**Health Check (Production):**
-```bash
-curl https://sso-serverless.ctang-402.workers.dev/health
-```
-
 **Generate SSO Token (Local):**
 ```bash
 curl -X POST http://localhost:8787/sso \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user": {
-      "username": "john_doe",
-      "id": "12345",
-      "email": "john@example.com"
-    }
-  }'
-```
-
-**Generate SSO Token (Production):**
-```bash
-curl -X POST https://sso-serverless.ctang-402.workers.dev/sso \
   -H "Content-Type: application/json" \
   -d '{
     "user": {
@@ -198,13 +179,6 @@ DISQUS.reset({
 └── package.json
 ```
 
-### Adding Features
-
-1. Create new modules in `src/`
-2. Add corresponding tests in `test/`
-3. Update the main handler in `src/index.js`
-4. Run tests with `yarn test`
-
 ## Security Considerations
 
 - Never commit actual API keys to version control
@@ -220,18 +194,6 @@ DISQUS.reset({
 1. **Invalid signature**: Check that your secret key is correct
 2. **CORS errors**: Ensure your frontend domain is properly configured
 3. **Missing environment variables**: Verify `.dev.vars` file exists and has correct keys
-
-### Debug Mode
-
-Enable debug logging by setting `DEBUG=true` in your environment variables.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
 
 ## License
 

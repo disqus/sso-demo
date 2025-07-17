@@ -1,6 +1,6 @@
 # Disqus SSO Serverless
 
-A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SSO) functionality. This project is based on the [official Disqus SSO implementation](https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/) and adapted for serverless deployment.
+A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SSO) functionality. This project is based on the [official Disqus SSO implementation examples](https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/) and adapted for serverless deployment.  The main implementation of the SSO logic is in [packages/backend/src/sso.js](https://github.com/disqus/sso-demo/blob/main/packages/backend/src/sso.js).
 
 ## Features
 

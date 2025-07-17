@@ -6,7 +6,6 @@ A simple vanilla JavaScript implementation demo for Disqus SSO integrated with a
 
 - **Environment Detection**: Automatically uses localhost for development and production URL for deployment
 - **jQuery Integration**: Uses jQuery for AJAX calls and DOM manipulation
-- **Responsive Design**: Works well on desktop and mobile devices
 - **Real-time SSO Testing**: Login/logout functionality with live Disqus integration
 
 ## Usage

@@ -4,14 +4,9 @@ A React implementation of the Disqus SSO demo using Vite as the build tool.
 
 ## Features
 
-- **React Components**: Modern React with hooks for state management
 - **Official Disqus Integration**: Uses the official `disqus-react` package for seamless Disqus embedding
-- **Environment Detection**: Automatically uses localhost for development and production URL for deployment
-- **Axios HTTP Client**: Modern HTTP client for API requests instead of jQuery
-- **Responsive Design**: Works well on desktop and mobile devices
 - **Real-time SSO Testing**: Login/logout functionality with live Disqus integration
-- **Better Error Handling**: Comprehensive error states and loading indicators
-- **Vite Build Tool**: Fast development server and optimized production builds
+- **Axios HTTP Client**: Modern HTTP client for API requests instead of jQuery
 
 ## Usage
 

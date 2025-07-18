@@ -126,7 +126,7 @@
           data: JSON.stringify({ user: userData }),
           success: function(response) {
             $('#disqus_thread p').remove();
-            $("<p></p>").text("payload: ").appendTo("#disqus_thread");
+            $("<p></p>").text("remote_auth_s3 payload: ").appendTo("#disqus_thread");
             $("<p></p>").text(response.sso.auth).appendTo("#disqus_thread");
             $("<p></p>").text("public key: ").appendTo("#disqus_thread");
             $("<p></p>").text(response.sso.pubKey).appendTo("#disqus_thread");

@@ -31,7 +31,7 @@ const DisqusSSO = () => {
         })
             .then(response => response.data.sso)
             .then(sso => {
-                setLoginPayload(`Payload: ${sso.auth}`);
+                setLoginPayload(`remoteAuthS3 payload: ${sso.auth}`);
                 setLoginPublicKey(`Public Key: ${sso.pubKey}`);
                 setLoginTestField(`Test Field: ${sso.test}`);
                 setLoggedInStatus(true);

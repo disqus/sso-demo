@@ -31,10 +31,10 @@ export default {
           });
         }
 
-        const ssoScript = generateDisqusSSO(user, env.DISQUS_SECRET_KEY, env.DISQUS_PUBLIC_KEY);
+        const ssoPayload = generateDisqusSSO(user, env.DISQUS_SECRET_KEY, env.DISQUS_PUBLIC_KEY);
         
         return new Response(JSON.stringify({ 
-          sso: ssoScript 
+          sso: ssoPayload 
         }), {
           headers: { 
             'Content-Type': 'application/json',

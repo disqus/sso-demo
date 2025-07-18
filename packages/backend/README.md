@@ -43,12 +43,6 @@ Your serverless function will be available at `http://localhost:8787`
 **Production URL:** `https://sso-serverless.ctang-402.workers.dev/`
 
 ### 4. Test the API
-
-**Health Check (Local):**
-```bash
-curl http://localhost:8787/health
-```
-
 **Generate SSO Token (Local):**
 ```bash
 curl -X POST http://localhost:8787/sso \
@@ -89,18 +83,6 @@ Generates a Disqus SSO authentication script.
     "auth": "base64_message signature timestamp",
     "test": "this is a test field"
   }
-}
-```
-
-### `GET /health`
-
-Health check endpoint.  Not necesary for integrating Disqus SSO but can be useful to check the health of a worker.
-
-**Response:**
-```json
-{
-  "status": "ok",
-  "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ```
 

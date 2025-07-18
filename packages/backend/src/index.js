@@ -54,23 +54,10 @@ export default {
       }
     }
 
-    if (url.pathname === '/health') {
-      return new Response(JSON.stringify({ 
-        status: 'ok', 
-        timestamp: new Date().toISOString() 
-      }), {
-        headers: { 
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-    }
-
     return new Response(JSON.stringify({
       message: 'Disqus SSO API',
       endpoints: {
         'POST /sso': 'Generate SSO token',
-        'GET /health': 'Health check'
       }
     }), {
       headers: { 

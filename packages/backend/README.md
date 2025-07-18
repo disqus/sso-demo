@@ -116,6 +116,39 @@ yarn test
 
 The backend is deployed to: **`https://sso-serverless.ctang-402.workers.dev/`**
 
+### Automatic Deployment (Recommended)
+
+The backend automatically deploys via GitHub Actions when you push changes to the `packages/backend/` directory.
+
+**Setup:**
+
+1. **Configure GitHub Secrets** in your repository settings (`Settings` → `Secrets and variables` → `Actions`):
+   - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token
+   - `DISQUS_SECRET_KEY`: Your Disqus secret key
+   - `DISQUS_PUBLIC_KEY`: Your Disqus public key
+
+2. **Get Cloudflare API Token:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/profile/api-tokens)
+   - Create a token with "Edit Cloudflare Workers" permissions
+   - Copy the token to the `CLOUDFLARE_API_TOKEN` secret
+
+3. **Deploy:**
+   ```bash
+   git add .
+   git commit -m "Update backend"
+   git push origin main
+   ```
+
+The workflow will automatically:
+- ✅ Install dependencies
+- ✅ Run tests
+- ✅ Deploy to Cloudflare Workers
+- ✅ Set environment variables securely
+
+### Manual Deployment
+
+If you prefer to deploy manually:
+
 ### 1. Install Wrangler CLI
 
 ```bash

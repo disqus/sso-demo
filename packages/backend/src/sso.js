@@ -16,11 +16,12 @@ export function generateDisqusSSO(user, secretKey, publicKey) {
 
   // Create a JSON packet of our data attributes
   const data = JSON.stringify({
-    username: user.username,
     id: user.id,
+    username: user.username,
     email: user.email,
     avatar: user.avatar || undefined,
     url: user.url || undefined,
+    profile_url: user.profile_url || undefined,
   });
 
   // Encode the data to base64

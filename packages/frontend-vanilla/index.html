@@ -112,10 +112,12 @@
        */
       function login() {
         const userData = {
-          username: 'email subscriber',
           id: '12345',
+          username: 'email subscriber',
           email: 'emailsubscriber@example.com',
-          avatar: 'https://example.com/avatar.jpg'
+          avatar: 'http://example.com/avatar.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
+          url: 'http://example.com/', // optional - link to user's website
+          profile_url: 'http://example.com/', // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
         };
 
         const apiUrl = window.location.hostname === 'disqus.github.io'

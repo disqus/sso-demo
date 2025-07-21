@@ -66,11 +66,12 @@ Generates a Disqus SSO authentication script.
 ```json
 {
   "user": {
-    "username": "string",
     "id": "string", 
+    "username": "string",
     "email": "string",
-    "avatar": "string (optional)",
-    "url": "string (optional)"
+    "avatar": "string (optional)", // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
+    "url": "string (optional)", // optional - link to user's website
+    "profile_url": "string (optional)", // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
   }
 }
 ```

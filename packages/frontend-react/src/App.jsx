@@ -10,6 +10,9 @@ function App() {
         <div>
             <a href="https://github.com/disqus/sso-demo/tree/main/packages/backend" target="_blank" rel="noopener noreferrer">View Backend Source Code on GitHub</a>
         </div>
+        <div>
+        <a href='https://disqus.github.io/sso-demo/'>Back to Demo Home</a>
+        </div>
         <DisqusSSO />
     </div>
   );

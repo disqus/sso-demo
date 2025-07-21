@@ -17,9 +17,9 @@ const DisqusSSO = () => {
             avatar: 'https://example.com/avatar.jpg'
         };
 
-        const apiUrl = window.location.hostname === 'localhost' 
-          ? 'http://localhost:8787'
-          : 'https://sso-serverless.ctang-402.workers.dev';
+        const apiUrl = window.location.hostname === 'disqus.github.io'
+          ? 'https://sso-serverless.ctang-402.workers.dev'
+          : 'http://localhost:8787';
 
         axios({
             url: `${apiUrl}/sso`,

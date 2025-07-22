@@ -80,7 +80,6 @@
           icon: "http://example.com/favicon.png",
           url: "http://example.com/login/",
           logout: "http://example.com/logout/",
-          profile_url: "http://example.com/profileUrlTemplate/{username}",
           width: "800",
           height: "400",
         };
@@ -112,12 +111,12 @@
        */
       function login() {
         const userData = {
-          id: '12345',
-          username: 'email subscriber',
-          email: 'emailsubscriber@example.com',
-          avatar: 'http://example.com/avatar.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
-          url: 'http://example.com/', // optional - link to user's website
-          profile_url: 'http://example.com/', // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
+            id:'369093571',
+            username:'email subscriber',
+            email:'daniel.matteson+email@gmail.com',
+            avatar:'https://i.imgur.com/AYgoB04.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
+            url:'https://advrider.com/index.php?members/disqustest.422614/', // optional - link to user's website
+            profile_url: "http://example.com/profileUrlTemplate/email%20subscriber", // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
         };
 
         const apiUrl = window.location.hostname === 'disqus.github.io'

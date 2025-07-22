@@ -9,14 +9,21 @@ const DisqusSSO = () => {
     const [loginTestField, setLoginTestField] = useState('');
     const [remoteAuthS3, setRemoteAuthS3] = useState('');
 
-    const handleLogin = async () => {
-        const userData = {
+    const handleLogin = async (userId) => {
+        const userData = userId === 1 ? {
             id:'369093571',
             username:'email subscriber',
             email:'daniel.matteson+email@gmail.com',
             avatar:'https://i.imgur.com/AYgoB04.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
             url:'https://advrider.com/index.php?members/disqustest.422614/', // optional - link to user's website
             profile_url: "http://example.com/profileUrlTemplate/email%20subscriber", // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
+        } : {
+            id:'123456869',
+            username: 'Nope Nope Nope',
+            email: 'person7@example.com',
+            avatar:'https://i.imgur.com/AYgoB04.jpg',
+            url: 'example7.com',
+            profile_url:'https://example.com/providedProfileUrl-123456869'
         };
 
         const apiUrl = window.location.hostname === 'disqus.github.io'
@@ -51,9 +58,14 @@ const DisqusSSO = () => {
         <>
             <div id='login-logout-buttons'>
                 <button
-                    onClick={handleLogin}
+                    onClick={() => handleLogin(1)}
                 >
-                    Login
+                    Login as User 1
+                </button>
+                <button
+                    onClick={() => handleLogin()}
+                >
+                    Login as User 2
                 </button>
                 <button
                     onClick={handleLogout}

@@ -52,7 +52,8 @@
     </div>
 
     <div>
-         <button onclick="login();">Login</button>
+         <button onclick="login(1);">Login as User 1</button>
+         <button onclick="login();">Login as User 2</button>
         <button
         onclick="reset('e30= c1ad77866d19a308f133d18bb12a3e1f5d536a3b 1495142696'); $('#disqus_thread p').remove();"
         >
@@ -109,14 +110,21 @@
        * Makes call to server to get payload and reset Disqus
        * DISQUS.reset() is not required for SSO but can used to refresh Disqus with a new user
        */
-      function login() {
-        const userData = {
+      function login(userId) {
+        const userData = userId === 1 ? {
             id:'369093571',
             username:'email subscriber',
             email:'daniel.matteson+email@gmail.com',
             avatar:'https://i.imgur.com/AYgoB04.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
             url:'https://advrider.com/index.php?members/disqustest.422614/', // optional - link to user's website
             profile_url: "http://example.com/profileUrlTemplate/email%20subscriber", // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
+        } : {
+            id:'123456869',
+            username: 'Nope Nope Nope',
+            email: 'person7@example.com',
+            avatar:'https://i.imgur.com/AYgoB04.jpg',
+            url: 'example7.com',
+            profile_url:'https://example.com/providedProfileUrl-123456869'
         };
 
         const apiUrl = window.location.hostname === 'disqus.github.io'

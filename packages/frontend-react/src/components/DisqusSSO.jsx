@@ -27,7 +27,7 @@ const DisqusSSO = () => {
         };
 
         const apiUrl = window.location.hostname === 'disqus.github.io'
-          ? 'https://sso-serverless.ctang-402.workers.dev'
+          ? 'https://sso-demo-worker.disqus-a67.workers.dev'
           : 'http://localhost:8787';
 
         axios({

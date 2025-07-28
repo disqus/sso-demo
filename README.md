@@ -55,7 +55,7 @@ sso-demo/
 ├── index.html                   # Landing page for demos
 ├── .github/
 │   └── workflows/
-│       ├── deploy.yml          # Backend deployment
+│       ├── deploy.yml          # Backend deployment example
 │       └── deploy-pages.yml    # Frontend deployment
 └── package.json                # Monorepo configuration
 ```

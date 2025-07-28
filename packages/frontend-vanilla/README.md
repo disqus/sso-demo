@@ -40,7 +40,7 @@ The frontend is automatically deployed to GitHub Pages when changes are pushed t
 The frontend communicates with your Cloudflare Workers backend:
 
 - **Development**: `http://localhost:8787/sso`
-- **Production**: `https://sso-serverless.ctang-402.workers.dev/sso`
+- **Production**: `https://sso-demo-worker.disqus-a67.workers.dev/sso`
 
 ## Deployment
 

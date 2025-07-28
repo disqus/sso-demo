@@ -40,7 +40,7 @@ yarn dev
 
 Your serverless function will be available at `http://localhost:8787`
 
-**Production URL:** `https://sso-serverless.ctang-402.workers.dev/`
+**Production URL:** `https://sso-demo-worker.disqus-a67.workers.dev/`
 
 ### 4. Test the API
 **Generate SSO Token (Local):**
@@ -97,11 +97,11 @@ yarn test
 
 ## Deployment
 
-The backend is deployed to: **`https://sso-serverless.ctang-402.workers.dev/`**
+The backend is deployed to: **`https://sso-demo-worker.disqus-a67.workers.dev/`**
 
 ### Automatic Deployment (Recommended)
 
-The backend automatically deploys via GitHub Actions when you push changes to the `packages/backend/` directory.
+The backend can automatically deploy via GitHub Actions when you push changes to the `packages/backend/` directory, set up a workflow like in `.github/workflows/deploy-backend.yml`, and by setting up the below:
 
 **Setup:**
 
@@ -141,7 +141,7 @@ yarn global add wrangler
 ### 2. Authenticate with Cloudflare
 
 ```bash
-wrangler auth login
+wrangler login
 ```
 
 ### 3. Set Production Secrets

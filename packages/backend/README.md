@@ -101,7 +101,7 @@ The backend is deployed to: **`https://sso-demo-worker.disqus-a67.workers.dev/`*
 
 ### Automatic Deployment (Recommended)
 
-The backend can automatically deploy via GitHub Actions when you push changes to the `packages/backend/` directory, set up a workflow like in `.github/workflows/deploy-backend.yml`, and by setting up the below:
+The backend can automatically deploy via GitHub Actions when you push changes to the `packages/backend/` directory, set up a workflow like in `.github/examples/deploy-backend.yml`, and by setting up the below:
 
 **Setup:**
 

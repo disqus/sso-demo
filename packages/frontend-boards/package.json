@@ -1,0 +1,15 @@
+{
+  "name": "@disqus-sso/frontend-boards",
+  "version": "1.0.0",
+  "description": "Vanilla JavaScript frontend for Disqus Boards SSO",
+  "scripts": {
+    "dev": "http-server . -p 3002 -c-1 --cors",
+    "build": "echo 'No build step needed for vanilla JS'",
+    "deploy": "echo 'Deploy to your preferred static hosting'"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

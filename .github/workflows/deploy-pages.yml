@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/frontend-vanilla/**'
       - 'packages/frontend-react/**'
+      - 'packages/frontend-boards/**'
       - 'index.html'
   workflow_dispatch:
 
@@ -57,6 +58,11 @@ jobs:
         run: |
           mkdir -p deploy-site/react
           cp -r packages/frontend-react/dist/* deploy-site/react/
+
+      - name: Copy Boards frontend
+        run: |
+          mkdir -p deploy-site/boards
+          cp packages/frontend-boards/index.html deploy-site/boards/
           
       - name: Copy landing page
         run: |

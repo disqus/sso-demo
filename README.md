@@ -1,6 +1,6 @@
 # Disqus SSO Demo
 
-A complete Disqus Single Sign-On (SSO) implementation using a Cloudflare Workers backend with either a vanilla JavaScript or React frontend, demonstrating how to integrate Disqus with your own user system.
+A complete Disqus Single Sign-On (SSO) implementation using a Cloudflare Workers backend with comments (vanilla JavaScript or React) and a separate Boards frontend. The same Worker signs `remote_auth_s3` for both products.
 
 Live demo at [https://disqus.github.io/sso-demo/](https://disqus.github.io/sso-demo/)
 
@@ -25,7 +25,12 @@ This monorepo contains:
 - **React 18** with modern hooks and functional components
 - **Vite** for fast development and optimized builds
 - **Axios** for HTTP requests to the SSO backend
-- **disqus-react** package for seamless Disqus integration
+- **disqus-react** package for seamless Disqus comments integration
+
+### Frontend - Boards (`packages/frontend-boards/`)
+- **Vanilla JavaScript** Boards embed (`boards.js`)
+- Same Worker and test users as the comments demos
+- **`DISQUS_BOARDS.authenticate()`** after login/logout
 
 ## 🏗️ Project Structure
 
@@ -40,10 +45,13 @@ sso-demo/
 │   │   │   └── sso.test.js     # Test suite
 │   │   ├── wrangler.toml       # Cloudflare Workers config
 │   │   └── package.json
-│   ├── frontend-vanilla/        # Vanilla JS frontend
-│   │   ├── index.html          # Vanilla JS demo page
+│   ├── frontend-vanilla/        # Vanilla JS comments frontend
+│   │   ├── index.html          # Comments demo page
 │   │   └── package.json
-│   └── frontend-react/          # React frontend
+│   ├── frontend-boards/         # Vanilla JS Boards frontend
+│   │   ├── index.html          # Boards demo page
+│   │   └── package.json
+│   └── frontend-react/          # React comments frontend
 │       ├── src/
 │       │   ├── App.jsx         # Main React component
 │       │   ├── components/
@@ -92,11 +100,19 @@ yarn dev
 # In another terminal, serve vanilla frontend
 yarn dev:vanilla
 
-# Or serve React frontend
+# Or serve React comments frontend
 yarn dev:react
+
+# Or serve Boards frontend
+yarn dev:boards
 ```
 
 ### 4. Test Locally
 - Backend API: `http://localhost:8787`
-- Vanilla Frontend: `http://localhost:3000` (or open `packages/frontend-vanilla/index.html`)
-- React Frontend: `http://localhost:3001`
+- Vanilla comments: `http://localhost:3000` (or open `packages/frontend-vanilla/index.html`)
+- React comments: `http://localhost:3001`
+- Boards: `http://localhost:3002`
+
+Login as User 1 or User 2 signs a payload via `POST /sso`. Comments apply it with `DISQUS.reset`; Boards apply it with `DISQUS_BOARDS.authenticate`. Logout uses the same hardcoded empty `remote_auth_s3` as the comments demos.
+
+This version of Boards uses hash routing so GitHub Pages reloads keep working. The Boards shortname (`boards-ssoglitch`) must belong to the same Disqus organization as the SSO application, and its `corsAllowedOrigins` must include `https://disqus.github.io` (plus `http://localhost:3002` for local Boards).

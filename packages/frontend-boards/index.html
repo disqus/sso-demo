@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disqus SSO Demo - Boards</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px 10px 0;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        p {
+            word-wrap: break-word;
+            word-break: break-all;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            background: #f8f9fa;
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
+        }
+        #disqus-boards-host {
+            min-height: 320px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Disqus SSO Demo - Boards</h1>
+    <div>
+        <a href="https://github.com/disqus/sso-demo/tree/main/packages/frontend-boards" target="_blank" rel="noopener noreferrer">View Frontend Source Code on GitHub</a>
+    </div>
+
+    <div>
+        <a href="https://github.com/disqus/sso-demo/tree/main/packages/backend" target="_blank" rel="noopener noreferrer">View Backend Source Code on GitHub</a>
+    </div>
+    <div>
+        <a href='https://disqus.github.io/sso-demo/'>Back to Demo Home</a>
+    </div>
+
+    <div>
+         <button onclick="login(1);">Login as User 1</button>
+         <button onclick="login();">Login as User 2</button>
+        <button
+        onclick="reset('e30= c1ad77866d19a308f133d18bb12a3e1f5d536a3b 1495142696'); $('#sso-debug').empty();"
+        >
+        Log out user with empty SSO auth
+        </button>
+    </div>
+
+    <div id="sso-debug"></div>
+    <div id="disqus-boards-host"></div>
+
+    <script>
+      /**
+       * Boards uses the same SSO pair as comments: page.api_key and
+       * page.remote_auth_s3. Hash routing keeps discussion URLs in the
+       * fragment so this page can be hosted on GitHub Pages.
+       *
+       * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+
+      var DISQUS_PUBLIC_API_KEY =
+        "IrsWOMVmYfDfTq7IJ5fXMA2Ix99nB30EF7cP77SDgIrGyoQna1wXwU42wx17xRjN"; // Your Disqus API key that can be generated or referenced at https://disqus.com/api/applications/
+
+      var currentAuth = {
+        apiKey: DISQUS_PUBLIC_API_KEY,
+        remoteAuthS3: ""
+      };
+
+      function pageBasePath() {
+        return (
+          window.location.pathname.replace(/\/index\.html$/, "").replace(/\/+$/, "") ||
+          "/"
+        );
+      }
+
+      window.disqus_boards_config = function () {
+        this.routerMode = "hash";
+        this.basePath = pageBasePath();
+        this.page = {
+          api_key: currentAuth.apiKey
+        };
+        if (currentAuth.remoteAuthS3) {
+          this.page.remote_auth_s3 = currentAuth.remoteAuthS3;
+        }
+        this.sso = { // this `sso` object is optional.  It is only needed if you want the SSO login button to appear next to the Disqus login options
+          name: "SampleNews",
+          button: "http://example.com/images/samplenews.gif",
+          icon: "http://example.com/favicon.png",
+          url: "http://example.com/login/",
+          logout: "http://example.com/logout/",
+          width: "800",
+          height: "400",
+        };
+      };
+
+      (function () {
+        var d = document,
+          s = d.createElement("script");
+
+        s.src = "https://boards-ssoglitch.disqus.com/boards.js";
+
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+
+      /**
+       * boards.js flattens disqus_boards_config into a plain object once, so
+       * authenticate() re-reads that object rather than calling the function
+       * again. Write the new credentials onto it before authenticating.
+       */
+      var reset = function (newAuth) {
+        currentAuth.remoteAuthS3 = newAuth;
+        var config = window.disqus_boards_config;
+        if (config && typeof config === "object") {
+          config.page = {
+            api_key: currentAuth.apiKey,
+            remote_auth_s3: newAuth
+          };
+        }
+        if (window.DISQUS_BOARDS && window.DISQUS_BOARDS.authenticate) {
+          window.DISQUS_BOARDS.authenticate();
+        }
+      };
+
+      /**
+       * Makes call to server to get payload and refresh Boards
+       * DISQUS_BOARDS.authenticate() is the Boards equivalent of DISQUS.reset()
+       */
+      function login(userId) {
+        const userData = userId === 1 ? {
+            id:'369093571',
+            username:'email subscriber',
+            email:'daniel.matteson+email@gmail.com',
+            avatar:'https://i.imgur.com/AYgoB04.jpg', // optional - link to that user's avatar. Note: URL must be less than 200 characters and must end in a valid image extension (e.g., .jpg, .png)
+            url:'https://advrider.com/index.php?members/disqustest.422614/', // optional - link to user's website
+            profile_url: "http://example.com/profileUrlTemplate/email%20subscriber", // optional - link to the user's profile that exists on the site's own domain. This is only used if the SSO integration is linking out to user profiles that exist on the site's own domain, rather than the Disqus profile.
+        } : {
+            id:'123456869',
+            username: 'Nope Nope Nope',
+            email: 'person7@example.com',
+            avatar:'https://i.imgur.com/AYgoB04.jpg',
+            url: 'example7.com',
+            profile_url:'https://example.com/providedProfileUrl-123456869'
+        };
+
+        const apiUrl = window.location.hostname === 'disqus.github.io'
+          ? 'https://sso-demo-worker.disqus-a67.workers.dev'
+          : 'http://localhost:8787';
+
+        $.ajax({
+          url: `${apiUrl}/sso`,
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ user: userData }),
+          success: function(response) {
+            $('#sso-debug').empty();
+            $("<p></p>").text("remote_auth_s3 payload: ").appendTo("#sso-debug");
+            $("<p></p>").text(response.sso.auth).appendTo("#sso-debug");
+            $("<p></p>").text("public key: ").appendTo("#sso-debug");
+            $("<p></p>").text(response.sso.pubKey).appendTo("#sso-debug");
+            $("<p></p>").text("test field: ").appendTo("#sso-debug");
+            $("<p></p>").text(response.sso.test).appendTo("#sso-debug");
+            currentAuth.apiKey = response.sso.pubKey;
+            reset(response.sso.auth);
+          },
+          error: function(xhr, status, error) {
+            $("<p></p>").text("Error: " + error).appendTo("#sso-debug");
+          }
+        });
+      }
+    </script>
+    <noscript>Please enable JavaScript to view this widget powered by Disqus.</noscript>
+</body>
+</html>

@@ -1,70 +1,64 @@
 # Disqus SSO Frontend - React
 
-A React implementation of the Disqus SSO demo using Vite as the build tool.
+A React comments demo for Disqus SSO, built with Vite and `disqus-react`.
+
+Live demo: [https://disqus.github.io/sso-demo/react/](https://disqus.github.io/sso-demo/react/)
 
 ## Features
 
-- **Official Disqus Integration**: Uses the official `disqus-react` package for seamless Disqus embedding
-- **Real-time SSO Testing**: Login/logout functionality with live Disqus integration
-- **Axios HTTP Client**: Modern HTTP client for API requests instead of jQuery
+- **`disqus-react` `DiscussionEmbed`** for the comments thread
+- **Axios** for `POST /sso` (no jQuery)
+- Host-page login/logout with the same test users as the vanilla demo
 
 ## Usage
 
 ### Local Development
 
-1. Make sure your backend is running:
+1. From the monorepo root, start the Worker:
    ```bash
    yarn dev
    ```
 
-2. Start the React development server:
+2. Start the Vite dev server (either command):
    ```bash
-   yarn workspace @disqus-sso/frontend-react dev
+   yarn dev:react
+   # equivalent: yarn workspace @disqus-sso/frontend-react dev
    ```
 
-3. Open your browser to `http://localhost:3001`
+3. Open [http://localhost:3001](http://localhost:3001)
 
 ### Production Build
 
 ```bash
-yarn workspace @disqus-sso/frontend-react build
+yarn build:react
+# equivalent: yarn workspace @disqus-sso/frontend-react build
 ```
 
-The build output will be in the `dist/` directory.
+Output is `packages/frontend-react/dist/`. GitHub Pages copies that tree to `/sso-demo/react/`.
 
 ## How It Works
 
-1. **Login Button**: Calls your backend API with test user data using Axios
-2. **Environment Detection**: Uses localhost in development, production URL when deployed
-3. **SSO Integration**: Passes the SSO payload to Disqus for authentication via the `DiscussionEmbed` component
+1. **Host-page login (working).** Axios POSTs test user data to `/sso`. The response's `auth` is passed to `DiscussionEmbed` as `remoteAuthS3` (along with `apiKey`).
+2. **Host-page logout.** Sets `remoteAuthS3` to the same hardcoded empty payload as the vanilla demo.
+3. **`config.sso` (placeholder).** Same comments-recipe `example.com` URLs as vanilla. Disqus may render a publisher login control; those URLs are not a working login.
+
+`DiscussionEmbed` is configured for the `ssoglitch` forum. `config.url` is hardcoded to the GitHub Pages origin even in local dev.
 
 ## Disqus Integration
 
-This implementation uses the **official `disqus-react` package** which provides:
+This page uses the **`disqus-react`** package:
 
-- **`DiscussionEmbed` Component**: Renders the Disqus comment thread with proper React lifecycle management
-- **Automatic Script Loading**: Handles loading and cleanup of Disqus scripts
-- **SSO Configuration**: Supports Disqus SSO configuration through component props
-- **React-Friendly**: Properly integrates with React's virtual DOM and component lifecycle
-
-### Key Advantages of `disqus-react`:
-
-- ✅ **Official Support**: Maintained by Disqus team
-- ✅ **React Optimized**: Designed specifically for React applications
-- ✅ **Better Performance**: Handles script loading and cleanup automatically
-- ✅ **Type Safety**: Includes TypeScript definitions
-- ✅ **SSO Ready**: Built-in support for Single Sign-On configuration
+- **`DiscussionEmbed`**: comment thread with React lifecycle handling
+- SSO fields (`apiKey`, `remoteAuthS3`, optional `sso`) go on the `config` prop
 
 ## API Integration
-
-The frontend communicates with your Cloudflare Workers backend:
 
 - **Development**: `http://localhost:8787/sso`
 - **Production**: `https://sso-demo-worker.disqus-a67.workers.dev/sso`
 
 ## Component Structure
 
-- `App.jsx`: Main application component
-- `components/DisqusSSO.jsx`: Main SSO component with login/logout functionality and `DiscussionEmbed` integration
-- `index.css`: Styling that matches the vanilla JS version
-- `main.jsx`: React application entry point
+- `App.jsx`: application shell
+- `components/DisqusSSO.jsx`: login/logout buttons and `DiscussionEmbed`
+- `index.css`: styling aligned with the vanilla demo
+- `main.jsx`: React entry

@@ -101,7 +101,7 @@
         if (currentAuth.remoteAuthS3) {
           this.page.remote_auth_s3 = currentAuth.remoteAuthS3;
         }
-        this.sso = { // this `sso` object is optional.  It is only needed if you want the SSO login button to appear next to the Disqus login options
+        this.sso = { // optional: Boards shows a publisher login row when url is set. example.com values are placeholders — host-page Login as User 1/2 is the working path. Production Boards uses icon as the glyph; a 404 icon shows as a broken image.
           name: "SampleNews",
           button: "http://example.com/images/samplenews.gif",
           icon: "http://example.com/favicon.png",

@@ -1,47 +1,44 @@
 # Disqus SSO Frontend - Vanilla JavaScript
 
-A simple vanilla JavaScript implementation demo for Disqus SSO integrated with a Cloudflare Workers backend.
+A vanilla JavaScript comments demo for Disqus SSO against a Cloudflare Workers backend.
+
+Live demo: [https://disqus.github.io/sso-demo/vanilla/](https://disqus.github.io/sso-demo/vanilla/)
 
 ## Features
 
-- **Environment Detection**: Automatically uses localhost for development and production URL for deployment
-- **jQuery Integration**: Uses jQuery for AJAX calls and DOM manipulation
-- **Real-time SSO Testing**: Login/logout functionality with live Disqus integration
+- **Environment detection**: `http://localhost:8787` locally, production Worker on GitHub Pages
+- **jQuery** for AJAX and DOM updates
+- Host-page login/logout with live Disqus comments (`ssoglitch`)
 
 ## Usage
 
 ### Local Development
 
-1. Make sure your backend is running:
+1. From the monorepo root, start the Worker:
    ```bash
    yarn dev
    ```
 
-2. Open `index.html` in your browser or serve it locally:
+2. Serve this page over HTTP:
    ```bash
    yarn dev:vanilla
    ```
 
+3. Open [http://localhost:3000](http://localhost:3000)
+
+Do not open `index.html` as a `file://` URL; Disqus and the Worker need an `http` origin.
+
 ### Production
 
-The frontend is automatically deployed to GitHub Pages when changes are pushed to the main branch.
-
-**Live Demo**: `https://disqus.github.io/sso-demo/`
+GitHub Actions deploys this package to GitHub Pages on pushes that touch the frontends (see `.github/workflows/deploy-pages.yml`).
 
 ## How It Works
 
-1. **Login Button**: Calls your backend API with test user data
-2. **Environment Detection**: Uses localhost in development, production URL when deployed
-3. **SSO Integration**: Passes the SSO payload to Disqus for authentication
-4. **Logout Button**: Clears the current user and resets Disqus
+1. **Host-page login (working).** POSTs test user data to `/sso`, then `DISQUS.reset({ reload: true })` with the new `remote_auth_s3`.
+2. **Host-page logout.** Applies the same hardcoded empty `remote_auth_s3` payload as the other demos and resets the embed. It does not call Disqus `/logout/`.
+3. **`this.sso` (placeholder).** Optional comments-recipe object so Disqus can show a publisher login control. URLs and images point at `example.com` and are not a working login.
 
 ## API Integration
 
-The frontend communicates with your Cloudflare Workers backend:
-
 - **Development**: `http://localhost:8787/sso`
 - **Production**: `https://sso-demo-worker.disqus-a67.workers.dev/sso`
-
-## Deployment
-
-This frontend is deployed to GitHub Pages automatically via GitHub Actions when you push changes to the main branch.

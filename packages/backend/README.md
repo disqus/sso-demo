@@ -14,6 +14,7 @@ A Cloudflare Workers serverless function that provides Disqus Single Sign-On (SS
 ### 1. Install Dependencies
 
 ```bash
+# from the monorepo root
 yarn install
 ```
 
@@ -22,10 +23,11 @@ yarn install
 Copy the environment variables template:
 
 ```bash
-cp .dev.vars.example .dev.vars
+# from the monorepo root
+cp packages/backend/.dev.vars.example packages/backend/.dev.vars
 ```
 
-Edit `.dev.vars` and add your actual Disqus keys:
+Edit `packages/backend/.dev.vars` and add your actual Disqus keys:
 
 ```bash
 DISQUS_SECRET_KEY=your_actual_secret_key
@@ -35,6 +37,7 @@ DISQUS_PUBLIC_KEY=your_actual_public_key
 ### 3. Run Locally
 
 ```bash
+# from the monorepo root
 yarn dev
 ```
 
@@ -60,7 +63,7 @@ curl -X POST http://localhost:8787/sso \
 
 ### `POST /sso`
 
-Generates a Disqus SSO authentication script.
+Returns a JSON SSO payload (`pubKey`, `auth`, `test`). `auth` is the `remote_auth_s3` string (`base64_message signature timestamp`). This endpoint does not return a script tag.
 
 **Request Body:**
 ```json
@@ -92,6 +95,7 @@ Generates a Disqus SSO authentication script.
 Run the test suite:
 
 ```bash
+# from the monorepo root
 yarn test
 ```
 
@@ -99,9 +103,9 @@ yarn test
 
 The backend is deployed to: **`https://sso-demo-worker.disqus-a67.workers.dev/`**
 
-### Automatic Deployment (Recommended)
+### Optional GitHub Actions deploy
 
-The backend can automatically deploy via GitHub Actions when you push changes to the `packages/backend/` directory, set up a workflow like in `.github/examples/deploy-backend.yml`, and by setting up the below:
+The Worker is **not** deployed by a workflow in this repo today. `.github/examples/deploy-backend.yml` is a commented template you can copy to `.github/workflows/` if you want pushes under `packages/backend/` to deploy. You still need the GitHub secrets below.
 
 **Setup:**
 
@@ -115,46 +119,42 @@ The backend can automatically deploy via GitHub Actions when you push changes to
    - Create a token with "Edit Cloudflare Workers" permissions
    - Copy the token to the `CLOUDFLARE_API_TOKEN` secret
 
-3. **Deploy:**
+3. **Enable the workflow (optional):** copy `.github/examples/deploy-backend.yml` to `.github/workflows/deploy-backend.yml`, uncomment it, then:
    ```bash
    git add .
    git commit -m "Update backend"
    git push origin main
    ```
 
-The workflow will automatically:
-- ✅ Install dependencies
-- ✅ Run tests
-- ✅ Deploy to Cloudflare Workers
-- ✅ Set environment variables securely
+Once that workflow is enabled, a matching push will:
+- Install dependencies
+- Run tests
+- Deploy to Cloudflare Workers
+- Apply the Disqus secrets from GitHub
 
 ### Manual Deployment
 
 If you prefer to deploy manually:
 
-### 1. Install Wrangler CLI
+### 1. Authenticate with Cloudflare
+
+From the monorepo root (Wrangler is a backend workspace dependency):
 
 ```bash
-yarn global add wrangler
+yarn workspace @disqus-sso/backend wrangler login
 ```
 
-### 2. Authenticate with Cloudflare
+### 2. Set Production Secrets
 
 ```bash
-wrangler login
+yarn workspace @disqus-sso/backend wrangler secret put DISQUS_SECRET_KEY
+yarn workspace @disqus-sso/backend wrangler secret put DISQUS_PUBLIC_KEY
 ```
 
-### 3. Set Production Secrets
+### 3. Deploy
 
 ```bash
-wrangler secret put DISQUS_SECRET_KEY
-wrangler secret put DISQUS_PUBLIC_KEY
-```
-
-### 4. Deploy
-
-```bash
-wrangler deploy
+yarn deploy:backend
 ```
 
 ## How It Works
@@ -162,15 +162,27 @@ wrangler deploy
 1. **User Data**: Your application sends user data to the `/sso` endpoint
 2. **JSON Encoding**: User data is encoded as JSON and base64 encoded
 3. **Signature**: An HMAC-SHA1 signature is generated using your Disqus secret key
-4. **Integration**: The SSO payload gets returned to your frontend, which you can use to refresh the Disqus embed with a new user.
+4. **Integration**: The frontend applies `sso.auth` as `remote_auth_s3`. Comments use `DISQUS.reset`; Boards writes the flattened `disqus_boards_config` object and calls `DISQUS_BOARDS.authenticate()`.
+
+Comments:
 
 ```
 DISQUS.reset({
-          reload: true,
-          config: function () {
-            this.page.remote_auth_s3 = newAuth;
-          },
-        });
+  reload: true,
+  config: function () {
+    this.page.remote_auth_s3 = newAuth;
+  },
+});
+```
+
+Boards:
+
+```
+window.disqus_boards_config.page = {
+  api_key: pubKey,
+  remote_auth_s3: newAuth,
+};
+window.DISQUS_BOARDS.authenticate();
 ```
 
 ## Environment Variables
@@ -208,12 +220,12 @@ DISQUS.reset({
 ### Common Issues
 
 1. **Invalid signature**: Check that your secret key is correct
-2. **CORS errors**: Ensure your frontend domain is properly configured
-3. **Missing environment variables**: Verify `.dev.vars` file exists and has correct keys
+2. **CORS errors**: Boards needs `localhost:3002` (or `https://disqus.github.io`) on the forum's `corsAllowedOrigins`. The Worker itself sends `Access-Control-Allow-Origin: *`.
+3. **Missing environment variables**: Verify `packages/backend/.dev.vars` exists and has the correct keys
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT (see the `license` field in `package.json`).
 
 ## Related Links
 

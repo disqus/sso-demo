@@ -1,32 +1,24 @@
-<!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
+# Disqus SSO Demo
 
-# Disqus SSO Serverless Project
+Yarn workspaces monorepo: Cloudflare Worker that signs Disqus `remote_auth_s3`, plus comments (vanilla, React) and Boards frontends.
 
-This is a Cloudflare Workers project that provides Disqus Single Sign-On (SSO) functionality as a serverless function.
+## Layout
 
-## Key Technologies
-- **Cloudflare Workers**: Serverless runtime
-- **Wrangler**: CLI for Cloudflare Workers development
-- **Vitest**: Testing framework
-- **Node.js crypto module**: For HMAC signature generation
+- `packages/backend/src/index.js` — Worker HTTP handler (`POST /sso`, CORS)
+- `packages/backend/src/sso.js` — HMAC-SHA1 payload (from the Disqus SSO recipes)
+- `packages/backend/test/` — Vitest
+- `packages/backend/wrangler.toml` — Worker config
+- `packages/backend/.dev.vars.example` — local secrets template (copy to `.dev.vars`)
+- `packages/frontend-vanilla/` — comments demo, `yarn dev:vanilla` → `:3000`
+- `packages/frontend-react/` — comments demo, `yarn dev:react` → `:3001`
+- `packages/frontend-boards/` — Boards demo, `yarn dev:boards` → `:3002`
+- `index.html` — GitHub Pages landing page
 
-## Project Structure
-- `src/index.js`: Main worker entry point with HTTP handlers
-- `src/sso.js`: Disqus SSO logic (ported from Python)
-- `test/`: Test files using Vitest
-- `wrangler.toml`: Cloudflare Workers configuration
-- `.dev.vars.example`: Environment variables template
+Run `yarn dev` from the repo root for the Worker (`:8787`). Do not treat repo-root `src/` as the Worker; it lives under `packages/backend/`.
 
-## Development Guidelines
-- Use modern ES modules syntax
-- Follow Cloudflare Workers best practices
-- Handle CORS properly for cross-origin requests
-- Validate all user inputs
-- Use environment variables for secrets
-- Write tests for all new functionality
+## Conventions
 
-## Security Notes
-- Never commit actual API keys to git
-- Use Wrangler secrets for production deployment
-- Validate all incoming request data
-- Implement proper error handling
+- ES modules in the Worker
+- Secrets only in `.dev.vars` / Wrangler secrets, never committed
+- Host-page login is the working SSO path; `this.sso` in the frontends is a comments-recipe placeholder (`example.com`), not a working publisher login
+- Boards applies credentials with `DISQUS_BOARDS.authenticate()`, comments with `DISQUS.reset`
